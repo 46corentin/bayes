@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex, notranslate">
+<meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet">
+<meta name="bingbot" content="noindex, nofollow, noarchive, nosnippet">
+<meta name="referrer" content="no-referrer">
+<title>Bayes — pilot</title>
+<style>
+  :root {
+    --bg: #fbfaf7;
+    --fg: #1b1b1a;
+    --muted: #6b6a66;
+    --line: #e4e2dc;
+    --accent: #2f5d50;
+    --prior: #b9b6ad;
+    --field: #ffffff;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #141413;
+      --fg: #ecebe6;
+      --muted: #9a988f;
+      --line: #2a2a27;
+      --accent: #7fb8a6;
+      --prior: #55534d;
+      --field: #1b1b19;
+    }
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--fg);
+    font: 17px/1.6 ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  }
+  main { max-width: 640px; margin: 0 auto; padding: 32px 16px 80px; }
+  header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 72px; }
+  .mark { font: 600 14px/1 ui-monospace, "SF Mono", Menlo, monospace; letter-spacing: .08em; }
+  .lang button {
+    background: none; border: 0; padding: 4px 6px; cursor: pointer;
+    font: 13px/1 ui-monospace, "SF Mono", Menlo, monospace; color: var(--muted);
+  }
+  .lang button[aria-pressed="true"] { color: var(--fg); text-decoration: underline; text-underline-offset: 4px; }
+  h1 {
+    font: 400 clamp(32px, 7vw, 46px)/1.12 Georgia, "Iowan Old Style", "Times New Roman", serif;
+    letter-spacing: -.01em; margin: 0 0 20px;
+  }
+  .lede { color: var(--muted); margin: 0 0 40px; }
+  h2 {
+    font: 500 12px/1 ui-monospace, "SF Mono", Menlo, monospace;
+    text-transform: uppercase; letter-spacing: .12em; color: var(--muted);
+    margin: 72px 0 20px;
+  }
+  figure { margin: 0 0 8px; }
+  svg { display: block; width: 100%; height: auto; }
+  figcaption { font-size: 13px; color: var(--muted); display: flex; gap: 20px; }
+  figcaption i { display: inline-block; width: 14px; height: 2px; vertical-align: middle; margin-right: 6px; }
+  .formula { font-family: Georgia, serif; font-style: italic; color: var(--muted); }
+  ol.cases { list-style: none; padding: 0; margin: 0; counter-reset: c; }
+  ol.cases li { counter-increment: c; padding: 18px 0; border-top: 1px solid var(--line); display: grid; grid-template-columns: 32px 1fr; }
+  ol.cases li:last-child { border-bottom: 1px solid var(--line); }
+  ol.cases li::before { content: "0" counter(c); font: 13px/1.9 ui-monospace, Menlo, monospace; color: var(--accent); }
+  ol.cases strong { font-weight: 600; display: block; }
+  ol.cases span { color: var(--muted); }
+  form { display: grid; gap: 18px; }
+  label { display: grid; gap: 6px; font-size: 14px; color: var(--muted); }
+  input, textarea, select {
+    font: inherit; color: var(--fg); background: var(--field);
+    border: 1px solid var(--line); border-radius: 6px; padding: 10px 12px; width: 100%;
+  }
+  textarea { min-height: 140px; resize: vertical; }
+  input:focus, textarea:focus, select:focus { outline: 2px solid var(--accent); outline-offset: -1px; border-color: transparent; }
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  @media (max-width: 520px) { .row { grid-template-columns: 1fr; } }
+  button.send {
+    justify-self: start; font: inherit; font-size: 15px; cursor: pointer;
+    background: var(--fg); color: var(--bg); border: 0; border-radius: 6px; padding: 11px 22px;
+  }
+  button.send:hover { background: var(--accent); }
+  .note { font-size: 13px; color: var(--muted); margin: 0; }
+  #done { display: none; border-left: 2px solid var(--accent); padding: 4px 0 4px 16px; }
+  #done.show { display: block; }
+  #done button { font: inherit; font-size: 13px; background: none; border: 1px solid var(--line); color: var(--fg); border-radius: 6px; padding: 6px 12px; cursor: pointer; margin-top: 8px; }
+  footer { margin-top: 96px; font-size: 13px; color: var(--muted); }
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <span class="mark">BAYES&nbsp;/&nbsp;PILOT</span>
+    <nav class="lang" aria-label="Language">
+      <button type="button" data-set-lang="en" aria-pressed="true">EN</button>
+      <button type="button" data-set-lang="fr" aria-pressed="false">FR</button>
+    </nav>
+  </header>
+
+  <h1 data-i18n="title">Decisions under uncertainty, modelled honestly.</h1>
+  <p class="lede" data-i18n="lede">Bayesian modelling is our specialty. We're running a small pilot with a few organisations that have a real question and imperfect data.</p>
+
+  <figure aria-hidden="true">
+    <svg viewBox="0 0 600 150">
+      <line x1="0" y1="140" x2="600" y2="140" stroke="var(--line)"/>
+      <path d="M0,140 C120,140 160,95 240,92 C320,89 380,138 600,140" fill="none" stroke="var(--prior)" stroke-width="2" stroke-dasharray="4 4"/>
+      <path d="M0,140 C250,140 290,18 340,18 C390,18 420,140 600,140" fill="var(--accent)" fill-opacity=".08" stroke="var(--accent)" stroke-width="2"/>
+    </svg>
+    <figcaption>
+      <span><i style="background:var(--prior)"></i><span data-i18n="prior">what you believed</span></span>
+      <span><i style="background:var(--accent)"></i><span data-i18n="posterior">after seeing the data</span></span>
+    </figcaption>
+  </figure>
+
+  <h2 data-i18n="h_what">What it is</h2>
+  <p data-i18n="what">Start from what you already know, update it with the data you observe, and get back not a single number but a full picture of what is likely — and how sure you can be. It works well with small or messy data, lets expert knowledge count, and turns uncertainty into something you can act on.</p>
+  <p class="formula">prior × data → posterior</p>
+
+  <h2 data-i18n="h_cases">Where it helps</h2>
+  <ol class="cases">
+    <li><div><strong data-i18n="c1t">Experiments with little data</strong><span data-i18n="c1d">A/B tests, pilots, clinical or field trials: get "there's an 87% chance B is better" instead of a p-value, and decide earlier.</span></div></li>
+    <li><div><strong data-i18n="c2t">Forecasting with honest ranges</strong><span data-i18n="c2d">Demand, revenue, staffing across many stores or products — sparse series borrow strength from each other, and every forecast comes with its uncertainty.</span></div></li>
+    <li><div><strong data-i18n="c3t">Risk where events are rare</strong><span data-i18n="c3d">Failure rates, fraud, incidents: combine scarce observations with expert judgement to estimate risks you can't measure directly.</span></div></li>
+  </ol>
+
+  <h2 data-i18n="h_you">How can this help you?</h2>
+  <form id="f" novalidate>
+    <div class="row">
+      <label><span data-i18n="f_name">Name</span><input name="name" autocomplete="name" required></label>
+      <label><span data-i18n="f_org">Organisation</span><input name="org" autocomplete="organization"></label>
+    </div>
+    <label><span data-i18n="f_email">Email</span><input name="email" type="email" autocomplete="email" required></label>
+    <label><span data-i18n="f_q">The question you'd like answered</span><textarea name="question" required data-i18n-ph="f_q_ph" placeholder="e.g. Which of our three pricing options will perform best, given only four weeks of data?"></textarea></label>
+    <label><span data-i18n="f_data">Data you have today</span>
+      <select name="data">
+        <option value="none" data-i18n="d0">Not much yet</option>
+        <option value="small" data-i18n="d1">A few spreadsheets</option>
+        <option value="db" data-i18n="d2">A database / data warehouse</option>
+        <option value="unsure" data-i18n="d3">Not sure</option>
+      </select>
+    </label>
+    <button class="send" type="submit" data-i18n="send">Send</button>
+    <p class="note" data-i18n="note">Opens your email app with your answers filled in. Nothing is stored on this page.</p>
+  </form>
+
+  <div id="done" role="status">
+    <p data-i18n="done">Thanks — your email app should have opened. If it didn't, copy your message and send it to us directly.</p>
+    <button type="button" id="copy" data-i18n="copy">Copy message</button>
+  </div>
+
+  <footer data-i18n="foot">Pilot programme · by invitation</footer>
+</main>
+
+<script>
+(function () {
+  // ↓ Set the address that should receive responses.
+  var CONTACT_EMAIL = "you@example.com";
+
+  var T = {
+    en: {
+      title: "Decisions under uncertainty, modelled honestly.",
+      lede: "Bayesian modelling is our specialty. We're running a small pilot with a few organisations that have a real question and imperfect data.",
+      prior: "what you believed", posterior: "after seeing the data",
+      h_what: "What it is",
+      what: "Start from what you already know, update it with the data you observe, and get back not a single number but a full picture of what is likely — and how sure you can be. It works well with small or messy data, lets expert knowledge count, and turns uncertainty into something you can act on.",
+      h_cases: "Where it helps",
+      c1t: "Experiments with little data",
+      c1d: "A/B tests, pilots, clinical or field trials: get “there's an 87% chance B is better” instead of a p-value, and decide earlier.",
+      c2t: "Forecasting with honest ranges",
+      c2d: "Demand, revenue, staffing across many stores or products — sparse series borrow strength from each other, and every forecast comes with its uncertainty.",
+      c3t: "Risk where events are rare",
+      c3d: "Failure rates, fraud, incidents: combine scarce observations with expert judgement to estimate risks you can't measure directly.",
+      h_you: "How can this help you?",
+      f_name: "Name", f_org: "Organisation", f_email: "Email",
+      f_q: "The question you'd like answered",
+      f_q_ph: "e.g. Which of our three pricing options will perform best, given only four weeks of data?",
+      f_data: "Data you have today",
+      d0: "Not much yet", d1: "A few spreadsheets", d2: "A database / data warehouse", d3: "Not sure",
+      send: "Send",
+      note: "Opens your email app with your answers filled in. Nothing is stored on this page.",
+      done: "Thanks — your email app should have opened. If it didn't, copy your message and send it to us directly.",
+      copy: "Copy message", copied: "Copied",
+      foot: "Pilot programme · by invitation",
+      subj: "Bayes pilot — ", req: "Please fill in your name, a valid email and your question.",
+      l_name: "Name", l_org: "Organisation", l_email: "Email", l_data: "Data", l_q: "Question"
+    },
+    fr: {
+      title: "Décider dans l'incertitude, avec des modèles honnêtes.",
+      lede: "La modélisation bayésienne est notre spécialité. Nous menons un pilote avec quelques organisations qui ont une vraie question et des données imparfaites.",
+      prior: "ce que vous pensiez", posterior: "après avoir vu les données",
+      h_what: "De quoi s'agit-il",
+      what: "On part de ce que l'on sait déjà, on le met à jour avec les données observées, et l'on obtient non pas un seul chiffre mais une image complète de ce qui est probable — et du degré de certitude. La méthode fonctionne bien avec peu de données ou des données imparfaites, valorise l'expertise métier et rend l'incertitude exploitable.",
+      h_cases: "Où cela aide",
+      c1t: "Expériences avec peu de données",
+      c1d: "Tests A/B, pilotes, essais cliniques ou terrain : obtenez « 87 % de chances que B soit meilleur » plutôt qu'une p-valeur, et décidez plus tôt.",
+      c2t: "Prévisions avec des fourchettes honnêtes",
+      c2d: "Demande, chiffre d'affaires, effectifs sur de nombreux magasins ou produits — les séries clairsemées s'appuient les unes sur les autres, et chaque prévision s'accompagne de son incertitude.",
+      c3t: "Risques quand les événements sont rares",
+      c3d: "Taux de panne, fraude, incidents : combinez des observations rares avec le jugement d'experts pour estimer des risques impossibles à mesurer directement.",
+      h_you: "Comment cela peut-il vous aider ?",
+      f_name: "Nom", f_org: "Organisation", f_email: "E-mail",
+      f_q: "La question à laquelle vous aimeriez répondre",
+      f_q_ph: "ex. Laquelle de nos trois offres tarifaires fonctionnera le mieux, avec seulement quatre semaines de données ?",
+      f_data: "Les données dont vous disposez",
+      d0: "Pas grand-chose pour l'instant", d1: "Quelques tableurs", d2: "Une base / un entrepôt de données", d3: "Je ne sais pas",
+      send: "Envoyer",
+      note: "Ouvre votre messagerie avec vos réponses pré-remplies. Rien n'est enregistré sur cette page.",
+      done: "Merci — votre messagerie devrait s'être ouverte. Sinon, copiez votre message et envoyez-le-nous directement.",
+      copy: "Copier le message", copied: "Copié",
+      foot: "Programme pilote · sur invitation",
+      subj: "Pilote Bayes — ", req: "Merci d'indiquer votre nom, un e-mail valide et votre question.",
+      l_name: "Nom", l_org: "Organisation", l_email: "E-mail", l_data: "Données", l_q: "Question"
+    }
+  };
+
+  var lang = "en";
+  function store(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+  function load(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+
+  function apply(l) {
+    lang = T[l] ? l : "en";
+    var t = T[lang];
+    document.documentElement.lang = lang;
+    document.querySelectorAll("[data-i18n]").forEach(function (el) {
+      var k = el.getAttribute("data-i18n"); if (t[k]) el.textContent = t[k];
+    });
+    document.querySelectorAll("[data-i18n-ph]").forEach(function (el) {
+      el.placeholder = t[el.getAttribute("data-i18n-ph")];
+    });
+    document.querySelectorAll("[data-set-lang]").forEach(function (b) {
+      b.setAttribute("aria-pressed", b.getAttribute("data-set-lang") === lang ? "true" : "false");
+    });
+    store("bayes-lang", lang);
+  }
+
+  document.querySelectorAll("[data-set-lang]").forEach(function (b) {
+    b.addEventListener("click", function () { apply(b.getAttribute("data-set-lang")); });
+  });
+
+  var q = new URLSearchParams(location.search).get("lang");
+  var nav = (navigator.language || "en").slice(0, 2).toLowerCase();
+  apply(q || load("bayes-lang") || (nav === "fr" ? "fr" : "en"));
+
+  var form = document.getElementById("f"), done = document.getElementById("done"), body = "";
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var t = T[lang], d = new FormData(form);
+    var name = (d.get("name") || "").trim(), email = (d.get("email") || "").trim(), qu = (d.get("question") || "").trim();
+    if (!name || !qu || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { alert(t.req); return; }
+    var sel = form.querySelector("select");
+    body = t.l_name + ": " + name + "\n" +
+           t.l_org + ": " + (d.get("org") || "—") + "\n" +
+           t.l_email + ": " + email + "\n" +
+           t.l_data + ": " + sel.options[sel.selectedIndex].text + "\n\n" +
+           t.l_q + ":\n" + qu + "\n";
+    location.href = "mailto:" + CONTACT_EMAIL +
+      "?subject=" + encodeURIComponent(t.subj + name) +
+      "&body=" + encodeURIComponent(body);
+    form.hidden = true; done.classList.add("show");
+  });
+
+  document.getElementById("copy").addEventListener("click", function () {
+    var btn = this, text = "To: " + CONTACT_EMAIL + "\n\n" + body;
+    function ok() { btn.textContent = T[lang].copied; }
+    if (navigator.clipboard) navigator.clipboard.writeText(text).then(ok, function () { prompt("", text); });
+    else prompt("", text);
+  });
+})();
+</script>
+</body>
+</html>
