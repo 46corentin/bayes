@@ -73,6 +73,10 @@
   .bar em { font-style: normal; text-align: right; font-family: ui-monospace, Menlo, monospace; }
   .bar.post em { color: var(--fg); }
   .ex .res { margin: 0; font-weight: 500; }
+  .cta { margin-top: 32px; display: grid; gap: 14px; justify-items: start; }
+  .cta p { margin: 0; color: var(--muted); }
+  a.send { text-decoration: none; display: inline-block; }
+  html { scroll-behavior: smooth; }
   ol.cases { list-style: none; padding: 0; margin: 0; counter-reset: c; }
   ol.cases li { counter-increment: c; padding: 18px 0; border-top: 1px solid var(--line); display: grid; grid-template-columns: 32px 1fr; }
   ol.cases li:last-child { border-bottom: 1px solid var(--line); }
@@ -89,11 +93,11 @@
   input:focus, textarea:focus, select:focus { outline: 2px solid var(--accent); outline-offset: -1px; border-color: transparent; }
   .row { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
   @media (max-width: 520px) { .row { grid-template-columns: 1fr; } }
-  button.send {
+  .send {
     justify-self: start; font: inherit; font-size: 15px; cursor: pointer;
     background: var(--fg); color: var(--bg); border: 0; border-radius: 6px; padding: 11px 22px;
   }
-  button.send:hover { background: var(--accent); }
+  .send:hover { background: var(--accent); }
   .note { font-size: 13px; color: var(--muted); margin: 0; }
   #done { display: none; border-left: 2px solid var(--accent); padding: 4px 0 4px 16px; }
   #done.show { display: block; }
@@ -181,14 +185,20 @@
     </article>
   </div>
 
-  <h2 data-i18n="h_cases">Where it helps</h2>
+  <h2 data-i18n="h_cases">What about you?</h2>
+  <p data-i18n="you_lede">Whatever your field, you may recognise yourself here:</p>
   <ol class="cases">
-    <li><div><strong data-i18n="c1t">Experiments with little data</strong><span data-i18n="c1d">A/B tests, pilots, clinical or field trials: get "there's an 87% chance B is better" instead of a p-value, and decide earlier.</span></div></li>
-    <li><div><strong data-i18n="c2t">Forecasting with honest ranges</strong><span data-i18n="c2d">Demand, revenue, staffing across many stores or products — sparse series borrow strength from each other, and every forecast comes with its uncertainty.</span></div></li>
-    <li><div><strong data-i18n="c3t">Risk where events are rare</strong><span data-i18n="c3d">Failure rates, fraud, incidents: combine scarce observations with expert judgement to estimate risks you can't measure directly.</span></div></li>
+    <li><div><strong data-i18n="c1t">You have data, but not enough to be sure.</strong><span data-i18n="c1d">A few months of history, a small sample, a pilot that just started.</span></div></li>
+    <li><div><strong data-i18n="c2t">Your experts know things the numbers don't.</strong><span data-i18n="c2d">We turn that experience into something the model can use.</span></div></li>
+    <li><div><strong data-i18n="c3t">You need a range, not a single number.</strong><span data-i18n="c3d">To plan, budget or decide with your eyes open.</span></div></li>
+    <li><div><strong data-i18n="c4t">Something rare could cost you a lot.</strong><span data-i18n="c4d">And you'd like to see it coming, and know what to do.</span></div></li>
   </ol>
+  <div class="cta">
+    <p data-i18n="cta_t">No technical background needed — just a question and the data you have, however imperfect.</p>
+    <a href="#ask" class="send" data-i18n="cta">Try it with us?</a>
+  </div>
 
-  <h2 data-i18n="h_you">How can this help you?</h2>
+  <h2 id="ask" data-i18n="h_you">How can this help you?</h2>
   <form id="f" novalidate>
     <div class="row">
       <label><span data-i18n="f_name">Name</span><input name="name" autocomplete="name" required></label>
@@ -238,13 +248,14 @@
       risk: "Risk", plan: "Plan", now_l: "now", plan_l: "with plan",
       a1tag: "Wildfire \u2192 forest management", a1r: "Fire risk in the valley has risen to 20%.", a1p: "Clear undergrowth on the driest slopes, open two firebreaks, add patrols on windy days.", a1x: "\u2192 Back under the 5% you set as acceptable.",
       a2tag: "Rain \u2192 harvest plan", a2r: "Rain this afternoon is now 75% likely; 40% of the crop is still in the field.", a2p: "Harvest the ripest plots this morning, move crews from the sheltered plots, cover what's already cut.", a2x: "\u2192 Crop exposed to rain drops from 40% to 8%.",
-      h_cases: "Where it helps",
-      c1t: "Experiments with little data",
-      c1d: "A/B tests, pilots, clinical or field trials: get “there's an 87% chance B is better” instead of a p-value, and decide earlier.",
-      c2t: "Forecasting with honest ranges",
-      c2d: "Demand, revenue, staffing across many stores or products — sparse series borrow strength from each other, and every forecast comes with its uncertainty.",
-      c3t: "Risk where events are rare",
-      c3d: "Failure rates, fraud, incidents: combine scarce observations with expert judgement to estimate risks you can't measure directly.",
+      h_cases: "What about you?",
+      you_lede: "Whatever your field, you may recognise yourself here:",
+      c1t: "You have data, but not enough to be sure.", c1d: "A few months of history, a small sample, a pilot that just started.",
+      c2t: "Your experts know things the numbers don't.", c2d: "We turn that experience into something the model can use.",
+      c3t: "You need a range, not a single number.", c3d: "To plan, budget or decide with your eyes open.",
+      c4t: "Something rare could cost you a lot.", c4d: "And you'd like to see it coming, and know what to do.",
+      cta_t: "No technical background needed \u2014 just a question and the data you have, however imperfect.",
+      cta: "Try it with us?",
       h_you: "How can this help you?",
       f_name: "Name", f_org: "Organisation", f_email: "Email",
       f_q: "The question you'd like answered",
@@ -275,13 +286,14 @@
       risk: "Risque", plan: "Plan", now_l: "actuel", plan_l: "avec plan",
       a1tag: "Feux de forêt \u2192 gestion forestière", a1r: "Le risque de feu dans la vallée est monté à 20 %.", a1p: "Débroussailler les pentes les plus sèches, ouvrir deux pare-feu, renforcer les patrouilles les jours de vent.", a1x: "\u2192 De retour sous les 5 % que vous jugez acceptables.",
       a2tag: "Pluie \u2192 plan de récolte", a2r: "La pluie cet après-midi est désormais probable à 75 % ; 40 % de la récolte est encore au champ.", a2p: "Récolter les parcelles les plus mûres ce matin, déplacer les équipes des parcelles abritées, couvrir ce qui est déjà coupé.", a2x: "\u2192 La part de récolte exposée à la pluie passe de 40 % à 8 %.",
-      h_cases: "Où cela aide",
-      c1t: "Expériences avec peu de données",
-      c1d: "Tests A/B, pilotes, essais cliniques ou terrain : obtenez « 87 % de chances que B soit meilleur » plutôt qu'une p-valeur, et décidez plus tôt.",
-      c2t: "Prévisions avec des fourchettes honnêtes",
-      c2d: "Demande, chiffre d'affaires, effectifs sur de nombreux magasins ou produits — les séries clairsemées s'appuient les unes sur les autres, et chaque prévision s'accompagne de son incertitude.",
-      c3t: "Risques quand les événements sont rares",
-      c3d: "Taux de panne, fraude, incidents : combinez des observations rares avec le jugement d'experts pour estimer des risques impossibles à mesurer directement.",
+      h_cases: "Et vous ?",
+      you_lede: "Quel que soit votre domaine, vous vous reconnaîtrez peut-être ici :",
+      c1t: "Vous avez des données, mais pas assez pour être sûr.", c1d: "Quelques mois d'historique, un petit échantillon, un pilote qui démarre.",
+      c2t: "Vos experts savent ce que les chiffres ignorent.", c2d: "Nous transformons cette expérience en information exploitable par le modèle.",
+      c3t: "Il vous faut une fourchette, pas un chiffre unique.", c3d: "Pour planifier, budgéter ou décider en connaissance de cause.",
+      c4t: "Un événement rare pourrait vous coûter cher.", c4d: "Et vous aimeriez le voir venir, et savoir quoi faire.",
+      cta_t: "Aucune compétence technique requise \u2014 juste une question et les données dont vous disposez, même imparfaites.",
+      cta: "On essaie ensemble ?",
       h_you: "Comment cela peut-il vous aider ?",
       f_name: "Nom", f_org: "Organisation", f_email: "E-mail",
       f_q: "La question à laquelle vous aimeriez répondre",
