@@ -156,6 +156,31 @@
   </div>
   <p class="note" data-i18n="exnote">Numbers are illustrative.</p>
 
+  <h2 data-i18n="h_act">From forecast to action</h2>
+  <p data-i18n="act">We don't stop at the probability. We build dynamic models that recommend what to do when a risk rises — and update the plan as new data comes in, until the risk is back to a level you accept.</p>
+  <div class="ex">
+    <article>
+      <p class="tag" data-i18n="a1tag">Wildfire → forest management</p>
+      <p><span class="k" data-i18n="risk">Risk</span> <span data-i18n="a1r">Fire risk in the valley has risen to 20%.</span></p>
+      <p><span class="k" data-i18n="plan">Plan</span> <span data-i18n="a1p">Clear undergrowth on the driest slopes, open two firebreaks, add patrols on windy days.</span></p>
+      <div class="bars">
+        <div class="bar"><span data-i18n="now_l">now</span><b><i style="width:20%"></i></b><em>20%</em></div>
+        <div class="bar post"><span data-i18n="plan_l">with plan</span><b><i style="width:4%"></i></b><em>4%</em></div>
+      </div>
+      <p class="res" data-i18n="a1x">→ Back under the 5% you set as acceptable.</p>
+    </article>
+    <article>
+      <p class="tag" data-i18n="a2tag">Rain → harvest plan</p>
+      <p><span class="k" data-i18n="risk">Risk</span> <span data-i18n="a2r">Rain this afternoon is now 75% likely; 40% of the crop is still in the field.</span></p>
+      <p><span class="k" data-i18n="plan">Plan</span> <span data-i18n="a2p">Harvest the ripest plots this morning, move crews from the sheltered plots, cover what's already cut.</span></p>
+      <div class="bars">
+        <div class="bar"><span data-i18n="now_l">now</span><b><i style="width:40%"></i></b><em>40%</em></div>
+        <div class="bar post"><span data-i18n="plan_l">with plan</span><b><i style="width:8%"></i></b><em>8%</em></div>
+      </div>
+      <p class="res" data-i18n="a2x">→ Crop exposed to rain drops from 40% to 8%.</p>
+    </article>
+  </div>
+
   <h2 data-i18n="h_cases">Where it helps</h2>
   <ol class="cases">
     <li><div><strong data-i18n="c1t">Experiments with little data</strong><span data-i18n="c1d">A/B tests, pilots, clinical or field trials: get "there's an 87% chance B is better" instead of a p-value, and decide earlier.</span></div></li>
@@ -208,6 +233,11 @@
       e1tag: "Weather", e1h: "It rains on 30% of October days here.", e1n: "The pressure dropped sharply this morning.", e1r: "\u2192 75% chance of rain this afternoon.",
       e2tag: "Wildfire", e2h: "A fire starts on about 2 summer days in 100 in this valley.", e2n: "Three weeks without rain, and strong winds forecast.", e2r: "\u2192 1 chance in 5 of a fire tomorrow \u2014 ten times the usual.",
       exnote: "Numbers are illustrative.",
+      h_act: "From forecast to action",
+      act: "We don't stop at the probability. We build dynamic models that recommend what to do when a risk rises \u2014 and update the plan as new data comes in, until the risk is back to a level you accept.",
+      risk: "Risk", plan: "Plan", now_l: "now", plan_l: "with plan",
+      a1tag: "Wildfire \u2192 forest management", a1r: "Fire risk in the valley has risen to 20%.", a1p: "Clear undergrowth on the driest slopes, open two firebreaks, add patrols on windy days.", a1x: "\u2192 Back under the 5% you set as acceptable.",
+      a2tag: "Rain \u2192 harvest plan", a2r: "Rain this afternoon is now 75% likely; 40% of the crop is still in the field.", a2p: "Harvest the ripest plots this morning, move crews from the sheltered plots, cover what's already cut.", a2x: "\u2192 Crop exposed to rain drops from 40% to 8%.",
       h_cases: "Where it helps",
       c1t: "Experiments with little data",
       c1d: "A/B tests, pilots, clinical or field trials: get “there's an 87% chance B is better” instead of a p-value, and decide earlier.",
@@ -240,6 +270,11 @@
       e1tag: "Météo", e1h: "Ici, il pleut 30 % des jours d'octobre.", e1n: "La pression a fortement chuté ce matin.", e1r: "\u2192 75 % de chances de pluie cet après-midi.",
       e2tag: "Feux de forêt", e2h: "Un feu se déclare environ 2 jours d'été sur 100 dans cette vallée.", e2n: "Trois semaines sans pluie, et du vent fort annoncé.", e2r: "\u2192 1 chance sur 5 d'un feu demain \u2014 dix fois plus que d'habitude.",
       exnote: "Chiffres donnés à titre d'illustration.",
+      h_act: "De la prévision à l'action",
+      act: "Nous ne nous arrêtons pas à la probabilité. Nous construisons des modèles dynamiques qui recommandent quoi faire quand un risque augmente \u2014 et ajustent le plan à chaque nouvelle donnée, jusqu'à ramener le risque à un niveau que vous jugez acceptable.",
+      risk: "Risque", plan: "Plan", now_l: "actuel", plan_l: "avec plan",
+      a1tag: "Feux de forêt \u2192 gestion forestière", a1r: "Le risque de feu dans la vallée est monté à 20 %.", a1p: "Débroussailler les pentes les plus sèches, ouvrir deux pare-feu, renforcer les patrouilles les jours de vent.", a1x: "\u2192 De retour sous les 5 % que vous jugez acceptables.",
+      a2tag: "Pluie \u2192 plan de récolte", a2r: "La pluie cet après-midi est désormais probable à 75 % ; 40 % de la récolte est encore au champ.", a2p: "Récolter les parcelles les plus mûres ce matin, déplacer les équipes des parcelles abritées, couvrir ce qui est déjà coupé.", a2x: "\u2192 La part de récolte exposée à la pluie passe de 40 % à 8 %.",
       h_cases: "Où cela aide",
       c1t: "Expériences avec peu de données",
       c1d: "Tests A/B, pilotes, essais cliniques ou terrain : obtenez « 87 % de chances que B soit meilleur » plutôt qu'une p-valeur, et décidez plus tôt.",
